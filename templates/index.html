@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="content">
+        <h1 style="text-align: center">Welcome to Your To-Do </h1>
+
+         <div>
+{#                <p>Some content for your index page...</p>#}
+            <p><a href="{{ url_for('signup') }}">Sign Up</a></p>
+            <p><a href="{{ url_for('login') }}">Log In</a></p>
+            </div>
+        <h1 class="header">To-Do List</h1>
+        <table>
+{#            <tr class="table">#}
+{#                <th>Task</th>#}
+{#                <th>Date Added</th>#}
+{#                <th>Actions</th>#}
+{#            </tr>#}
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.created_at }}</td>
+                    <td>
+                        <a href="{{ url_for('delete_task', task_id=task._id) }}">Delete</a>
+                        <br>
+                        <a href="#">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <form class="create" action="{{ url_for('create_task') }}" method="POST">
+            <label class="add" for="content">Task:</label>
+            <input class="input" type="text" name="content" id="content" required>
+            <button class="add-btn" type="submit">Add Task</button>
+        </form>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    {{ task.content }}
+                    {% if not task.completed %}
+                        <a href="{{ url_for('complete_task', task_id=task._id) }}">Complete</a>
+                    {% endif %}
+                    <a href="{{ url_for('delete_task', task_id=task._id) }}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    <a href="{{ url_for('view_tasks') }}">View All Tasks</a>
+
+    </div>
+{% endblock %}
+
+
