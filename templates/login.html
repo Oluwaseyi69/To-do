@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <!-- Add any head content you need -->
 {% endblock %}
+    <!-- Add any head content you need -->
 
 {% block body %}
     <div class="content">
@@ -17,17 +17,19 @@
 {#                {% endif %}#}
 {#            {% endwith %}#}
 
-            <form method="POST" action="{{ url_for('login') }}">
+            <form class="auth" method="POST" action="{{ url_for('login') }}">
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="username" required>
+                <input class="input" type="text" name="username" id="username" required>
 
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" required>
+                <input class="input" type="password" name="password" id="password" required>
 
-                <input type="submit" value="Log In">
+                <button class="signup_btn" type="submit" >Log In</button>
+                        <div><p><a class="back" href="{{ url_for('index') }}">Back to SignUp</a></p></div>
+
             </form>
         </div>
-    <p><a href="{{ url_for('index') }}">Back to Index</a></p>
+
 
     </div>
 {% endblock %}

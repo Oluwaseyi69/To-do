@@ -52,17 +52,72 @@
 /*    justify-content: space-between;*/
 /*    margin-outside: 100px;*/
 /*}*/
+/*body{*/
+/*    justify-content: center;*/
+/*    text-align: center;*/
+/*    align-items: center;*/
+/*}*/
+/*.container{*/
+/*    color: #3A7734;*/
+/*    width: 100px;*/
+/*    height: 50px;*/
+/*    text-align: center;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    flex-direction: column;*/
+/*    font-size: large;*/
+/*}*/
+/*.auth{*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    flex-direction: column;*/
+/*    gap: 5px;*/
+/*    font-size: 20px;*/
+/*    width: 200px;*/
+/*    height: 60px;*/
+/*}*/
+
 body{
-    justify-content: center;
-    text-align: center;
+      display: flex;
+      background-image: url("/static/css/images/joanna-kosinska-1_CMoFsPfso-unsplash.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      gap: 50px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
 }
-.container{
-    color: #3A7734;
-    width: 100px;
-    height: 50px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    font-size: large;
+.auth{
+      width: 300px;
+      height: 30px;
+      border-radius: 90px;
+      font-size: 20px;
+      padding-top: 50px;
+}
+.input{
+    margin-bottom: 10px;
+    width: 300px;
+    height: 30px;
+    font-size: 15px;
+}
+.signup_text{
+      text-align: center;
+      font-family: sans-serif;
+      font-size: 20px;
+      padding-top: 20px;
+}
+.signup_btn{
+      cursor: pointer;
+      width: 55px;
+      height: 25px;
+      border: none;
+      font-size: 11px;
+      font-weight: bold;
+}
+.signup_btn:hover{
+      /*background-color: #30799B;*/
+      background-color: #555555;
+}
+.back{
+color: black
 }

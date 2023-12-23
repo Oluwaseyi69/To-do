@@ -11,6 +11,6 @@
                 <li>{{ task.content }} - {{ task.created_at }}</li>
             {% endfor %}
         </ul>
-        <a href="{{ url_for('index') }}">Back to Task List</a>
+        <a class="back" href="{{ url_for('index') }}">Back to Task List</a>
     </div>
 {% endblock %}

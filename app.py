@@ -1,11 +1,10 @@
-from datetime import timezone
+import re
 
 from bson import ObjectId
 from flask import Flask, render_template, url_for, request, redirect, flash, session
 from pymongo import MongoClient
 from datetime import datetime
-# from flask_pymongo import PyMongo
-from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
 
@@ -29,17 +28,39 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
         new_user = {
             'username': username,
             'password': password
         }
 
         collection.db.users.insert_one(new_user)
+        if password != confirm_password:
+            flash('Passwords do not match. Please try again.', 'danger')
+            return redirect(url_for('signup'))
+
+        if not is_valid_password(password):
+            flash('Invalid password. Please choose a stronger password.', 'danger')
+            return redirect(url_for('signup'))
 
         flash('Account created successfully!', 'success')
         return redirect(url_for('login'))
 
     return render_template('signup.html')
+
+
+def is_valid_password(password):
+    length = 8
+    uppercase = re.search(r'[A-Z]', password)
+    lowercase = re.search(r'[a-z]', password)
+    digit = re.search(r'\d', password)
+    character = re.search(r'\W', password)
+
+    if len(password) < length or not uppercase or not lowercase or not digit or not character:
+        return False
+
+    return True
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,7 +72,9 @@ def login():
 
         if user and password:
             flash('Login successful!', 'success')
-            return redirect(url_for('index'))
+            return render_template('index.html')
+
+            # return redirect(url_for('index.html'))
         else:
             flash('Login unsuccessful. Check username and password.', 'danger')
 
@@ -69,10 +92,10 @@ def index():
         }
         collection.insert_one(task)
         tasks = collection.find()
-        return render_template('index.html', tasks=tasks)
+        return render_template('signup.html', tasks=tasks)
 
     else:
-        return render_template('index.html')
+        return render_template('signup.html')
 
 
 @app.route('/complete_task/<int:task_id>', methods=['GET', 'POST'])
@@ -101,7 +124,7 @@ def delete_task(task_id):
     task_id_object = ObjectId(task_id)
     collection.delete_one({'_id': task_id_object})
 
-    return redirect(url_for('index'))
+    return render_template('index.html')
 
 
 @app.route('/update_task/<task_id>', methods=['GET', 'POST'])
