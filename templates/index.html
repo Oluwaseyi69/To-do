@@ -10,11 +10,7 @@
 
         <h1 class="header">To-Do List</h1>
         <table>
-{#            <tr class="table">#}
-{#                <th>Task</th>#}
-{#                <th>Date Added</th>#}
-{#                <th>Actions</th>#}
-{#            </tr>#}
+
             {% for task in tasks %}
                 <tr>
                     <td>{{ task.content }}</td>
@@ -22,7 +18,7 @@
                     <td>
                         <a href="{{ url_for('delete_task', task_id=task._id) }}">Delete</a>
                         <br>
-                        <a href="#">Update</a>
+                        <a href="{{ url_for('update_task', task_id=task._id) }}">Update</a>
                     </td>
                 </tr>
             {% endfor %}

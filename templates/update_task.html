@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <h1 style="text-align: center">Update Task</h1>
+        <div>
+            <form method="POST" action="{{ url_for('update_task', task_id=task._id) }}">
+                <label for="content">Task Content:</label>
+                <input type="text" id="content" name="content" value="{{ task.content }}" required>
+
+                <label for="completed">Completed:</label>
+                <input type="checkbox" id="completed" name="completed" {% if task.completed %}checked{% endif %}>
+
+                <button type="submit">Update Task</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

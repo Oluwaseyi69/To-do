@@ -5,7 +5,6 @@ from flask import Flask, render_template, url_for, request, redirect, flash, ses
 from pymongo import MongoClient
 from datetime import datetime
 
-
 app = Flask(__name__)
 
 client = MongoClient("mongodb://localhost:27017/")
@@ -25,29 +24,28 @@ class User:
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+    if request.method != 'POST':
+        return render_template('signup.html')
+    username = request.form['username']
+    password = request.form['password']
+    confirm_password = request.form['confirm_password']
 
-        new_user = {
-            'username': username,
-            'password': password
-        }
+    new_user = {
+        'username': username,
+        'password': password
+    }
 
-        collection.db.users.insert_one(new_user)
-        if password != confirm_password:
-            flash('Passwords do not match. Please try again.', 'danger')
-            return redirect(url_for('signup'))
+    collection.db.users.insert_one(new_user)
+    if password != confirm_password:
+        flash('Passwords do not match. Please try again.', 'danger')
+        return redirect(url_for('signup'))
 
-        if not is_valid_password(password):
-            flash('Invalid password. Please choose a stronger password.', 'danger')
-            return redirect(url_for('signup'))
+    if not is_valid_password(password):
+        flash('Invalid password. Please choose a stronger password.', 'danger')
+        return redirect(url_for('signup'))
 
-        flash('Account created successfully!', 'success')
-        return redirect(url_for('login'))
-
-    return render_template('signup.html')
+    flash('Account created successfully!', 'success')
+    return redirect(url_for('login'))
 
 
 def is_valid_password(password):
@@ -129,7 +127,6 @@ def delete_task(task_id):
 
 @app.route('/update_task/<task_id>', methods=['GET', 'POST'])
 def update_task(task_id):
-    global update_task_data
     task_id_object = ObjectId(task_id)
     if request.method == 'POST':
         update_task_data = {
@@ -137,9 +134,15 @@ def update_task(task_id):
             "created_at": datetime.now(),
             "completed": True
         }
-    collection.update_one({'_id': task_id_object}, {'$set': update_task_data})
+        collection.update_one({'_id': task_id_object}, {'$set': update_task_data})
+        flash("Successfully updated", 'Success')
 
-    return redirect(url_for('index'))
+        return render_template('index.html')
+
+    if existing_task := collection.find_one({'_id': task_id_object}):
+        return render_template('update_task.html', task=existing_task)
+    flash('Task not found!', 'danger')
+    return render_template('index.html')
 
     # task = collection.find_one({'_id': task_id_object})
     # return render_template('update.html', task=task)
